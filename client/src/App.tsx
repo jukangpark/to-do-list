@@ -1,5 +1,6 @@
 import Router from "./Router";
 import styled, { createGlobalStyle } from "styled-components";
+import { Helmet, HelmetProvider } from "react-helmet-async";
 
 const GlobalStyle = createGlobalStyle`
 
@@ -56,6 +57,11 @@ a {
 const App = () => {
   return (
     <>
+      <HelmetProvider>
+        <Helmet>
+          <title>To Do List App v0.1</title>
+        </Helmet>
+      </HelmetProvider>
       <GlobalStyle />
       <Router />
     </>
