@@ -1,4 +1,6 @@
+import { useEffect } from "react";
 import { DragDropContext, Droppable, DropResult } from "react-beautiful-dnd";
+import { useForm } from "react-hook-form";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { toDoState } from "../atoms";
@@ -21,12 +23,29 @@ const Boards = styled.div`
   gap: 10px;
 `;
 
+interface IForm {
+  createBoard: string;
+}
+
 const Home = () => {
   const [toDos, setToDos] = useRecoilState(toDoState);
+  const { register, handleSubmit, setValue } = useForm<IForm>();
+  const onValid = ({ createBoard }: IForm) => {
+    console.log(createBoard);
+    setToDos((allBoards) => {
+      const newBoard = { ...allBoards, [createBoard]: [] };
+      return newBoard;
+    });
+    setValue("createBoard", "");
+  };
+
+  useEffect(() => {
+    console.log(toDos);
+  }, [toDos]);
 
   const onDragEnd = (info: DropResult) => {
     console.log(info);
-    const { destination, draggableId, source } = info;
+    const { destination, source } = info;
     if (!destination) return;
     if (destination?.droppableId === source.droppableId) {
       // same board
@@ -65,8 +84,8 @@ const Home = () => {
       Home
       <DragDropContext onDragEnd={onDragEnd}>
         <div>
-          <form>
-            <input placeholder="create board" />
+          <form onSubmit={handleSubmit(onValid)}>
+            <input {...register("createBoard")} placeholder="create board" />
             <button>Create</button>
           </form>
         </div>

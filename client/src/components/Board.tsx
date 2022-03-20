@@ -62,7 +62,6 @@ const Board = ({ toDos, boardId }: IBoardProps) => {
     };
 
     setToDos((allBoards) => {
-      console.log(allBoards);
       return {
         ...allBoards,
         [boardId]: [newToDo, ...allBoards[boardId]],
