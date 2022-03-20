@@ -1,6 +1,7 @@
 import Router from "./Router";
 import styled, { createGlobalStyle } from "styled-components";
 import { Helmet, HelmetProvider } from "react-helmet-async";
+import { useState } from "react";
 
 const GlobalStyle = createGlobalStyle`
 
@@ -55,6 +56,8 @@ a {
 `;
 
 const App = () => {
+  const [userObj, setUserObj] = useState(null);
+
   return (
     <>
       <HelmetProvider>
@@ -63,7 +66,7 @@ const App = () => {
         </Helmet>
       </HelmetProvider>
       <GlobalStyle />
-      <Router />
+      <Router userObj={userObj} isLoggedIn={Boolean(userObj)} />
     </>
   );
 };

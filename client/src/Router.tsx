@@ -3,7 +3,12 @@ import Navigation from "./components/Navigation";
 import Home from "./pages/Home";
 import Join from "./pages/Join";
 
-const Router = () => {
+interface IProps {
+  userObj: object | null; // userObj default 값이 null 이기 때문이다.
+  isLoggedIn: boolean;
+}
+
+const Router = ({ userObj, isLoggedIn }: IProps) => {
   return (
     <>
       <Navigation />
