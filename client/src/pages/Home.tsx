@@ -29,9 +29,15 @@ interface IForm {
 
 const Home = () => {
   const [toDos, setToDos] = useRecoilState(toDoState);
-  const { register, handleSubmit, setValue } = useForm<IForm>();
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm<IForm>();
+  console.log(errors);
+
   const onValid = ({ createBoard }: IForm) => {
-    console.log(createBoard);
     setToDos((allBoards) => {
       const newBoard = { ...allBoards, [createBoard]: [] };
       return newBoard;
@@ -39,12 +45,7 @@ const Home = () => {
     setValue("createBoard", "");
   };
 
-  useEffect(() => {
-    console.log(toDos);
-  }, [toDos]);
-
   const onDragEnd = (info: DropResult) => {
-    console.log(info);
     const { destination, source } = info;
     if (!destination) return;
     if (destination?.droppableId === source.droppableId) {
@@ -85,8 +86,14 @@ const Home = () => {
       <DragDropContext onDragEnd={onDragEnd}>
         <div>
           <form onSubmit={handleSubmit(onValid)}>
-            <input {...register("createBoard")} placeholder="create board" />
+            <input
+              {...register("createBoard", {
+                required: "board 이름을 작성해주세요",
+              })}
+              placeholder="create board"
+            />
             <button>Create</button>
+            <span>{errors?.createBoard?.message}</span>
           </form>
         </div>
         <Wrapper>

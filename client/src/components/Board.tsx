@@ -43,10 +43,6 @@ const Area = styled.div<IAreaProps>`
   min-height: 300px;
 `;
 
-interface IProps {
-  boardId: string;
-}
-
 interface IForm {
   toDo: string;
 }
