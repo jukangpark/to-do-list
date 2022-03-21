@@ -1,5 +1,11 @@
+import JoinForm from "../components/JoinForm";
+
 const Join = () => {
-  return <div>Join</div>;
+  return (
+    <div>
+      <JoinForm />
+    </div>
+  );
 };
 
 export default Join;

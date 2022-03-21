@@ -82,7 +82,6 @@ const Home = () => {
 
   return (
     <div>
-      Home
       <DragDropContext onDragEnd={onDragEnd}>
         <div>
           <form onSubmit={handleSubmit(onValid)}>

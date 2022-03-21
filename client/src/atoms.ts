@@ -13,3 +13,8 @@ export const toDoState = atom<IToDoState>({
   key: "toDo",
   default: { "To Do": [], Doing: [], Done: [] },
 });
+
+export const isDarkState = atom({
+  key: "isDark",
+  default: false,
+});

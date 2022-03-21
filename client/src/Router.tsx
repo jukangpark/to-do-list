@@ -2,6 +2,7 @@ import { Routes, Route, Link } from "react-router-dom";
 import Navigation from "./components/Navigation";
 import Home from "./pages/Home";
 import Join from "./pages/Join";
+import Login from "./pages/Login";
 
 interface IProps {
   userObj: object | null; // userObj default 값이 null 이기 때문이다.
@@ -15,6 +16,7 @@ const Router = ({ userObj, isLoggedIn }: IProps) => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/join" element={<Join />} />
+        <Route path="/login" element={<Login />} />
       </Routes>
     </>
   );

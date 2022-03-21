@@ -1,7 +1,10 @@
 import Router from "./Router";
-import styled, { createGlobalStyle } from "styled-components";
+import styled, { createGlobalStyle, ThemeProvider } from "styled-components";
 import { Helmet, HelmetProvider } from "react-helmet-async";
 import { useState } from "react";
+import { darkTheme, lightTheme } from "./theme";
+import { useRecoilValue } from "recoil";
+import { isDarkState } from "./atoms";
 
 const GlobalStyle = createGlobalStyle`
 
@@ -32,6 +35,8 @@ footer, header, hgroup, menu, nav, section {
 }
 body {
 	line-height: 1;
+  background-color: ${(props) => props.theme.bgColor};
+  color: ${(props) => props.theme.textColor}
 }
 ol, ul {
 	list-style: none;
@@ -56,17 +61,20 @@ a {
 `;
 
 const App = () => {
+  const isDark = useRecoilValue(isDarkState);
   const [userObj, setUserObj] = useState(null);
 
   return (
     <>
-      <HelmetProvider>
-        <Helmet>
-          <title>To Do List App v0.1</title>
-        </Helmet>
-      </HelmetProvider>
-      <GlobalStyle />
-      <Router userObj={userObj} isLoggedIn={Boolean(userObj)} />
+      <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
+        <HelmetProvider>
+          <Helmet>
+            <title>To Do List App v0.1</title>
+          </Helmet>
+        </HelmetProvider>
+        <GlobalStyle />
+        <Router userObj={userObj} isLoggedIn={Boolean(userObj)} />
+      </ThemeProvider>
     </>
   );
 };
