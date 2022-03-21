@@ -1,4 +1,7 @@
 import { useForm } from "react-hook-form";
+import { Link, useNavigate } from "react-router-dom";
+import styled from "styled-components";
+
 import {
   Btn,
   BtnContainer,
@@ -6,6 +9,13 @@ import {
   Form,
   Input,
 } from "../components/FormComponents";
+
+export const Title = styled.h1`
+  font-size: 24px;
+  text-align: center;
+  font-weight: bold;
+  color: ${(props) => props.theme.textColor};
+`;
 
 interface IFormData {
   id: string;
@@ -20,11 +30,13 @@ const Login = () => {
     setValue,
   } = useForm<IFormData>();
 
+  const navigate = useNavigate();
+
   const onValid = ({ id, password }: IFormData) => {
     setValue("id", "");
     setValue("password", "");
 
-    fetch("/api/user/login", {
+    fetch("/user/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -33,12 +45,23 @@ const Login = () => {
         id,
         password,
       }),
-    });
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        alert(data.message);
+        if (data.result === "ok") {
+          localStorage.setItem("isLoggedIn", "true");
+          navigate("/");
+        } else {
+          throw new Error(data.error);
+        }
+      });
   };
 
   return (
     <div>
       <BtnContainer>
+        <Title>로그인</Title>
         <Btn styleName={"kakao"}>카카오 계정으로 로그인</Btn>
         <Btn styleName={"github"}>깃헙 계정으로 로그인</Btn>
       </BtnContainer>
@@ -67,6 +90,9 @@ const Login = () => {
         <ErrorMessage>{errors.password?.message}</ErrorMessage>
 
         <Btn styleName={"join"}>{`로그인`}</Btn>
+        <span>
+          계정이 없으신가요? <Link to="/join">회원가입</Link>
+        </span>
       </Form>
     </div>
   );

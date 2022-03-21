@@ -1,10 +1,11 @@
 import Router from "./Router";
 import styled, { createGlobalStyle, ThemeProvider } from "styled-components";
 import { Helmet, HelmetProvider } from "react-helmet-async";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { darkTheme, lightTheme } from "./theme";
-import { useRecoilValue } from "recoil";
-import { isDarkState } from "./atoms";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { isDarkState, isLoggedInState } from "./atoms";
+import { Cookies, useCookies } from "react-cookie";
 
 const GlobalStyle = createGlobalStyle`
 
@@ -53,10 +54,6 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
-a {
-  text-decoration: none;
-  color: inherit;
-}
 button {
   border-radius: 0;
   border: none;
@@ -70,10 +67,45 @@ button {
 }
 `;
 
+interface IUserObj {
+  id: string;
+}
+
 const App = () => {
   const isDark = useRecoilValue(isDarkState);
-  const [userObj, setUserObj] = useState(null);
+  const [userObj, setUserObj] = useState<IUserObj | null>(null);
+  const [cookies, setCookie, removeCookie] = useCookies(["user"]);
 
+  // const cookie = new Cookies();
+
+  // const getCookie = (name: string) => {
+  //   return cookie.get(name);
+  // };
+  // useEffect(() => {
+  //   const user = getCookie("user"); //user cookie 가져오기
+  //   if (user) {
+  //     // cookie 가 있다면
+  //     setUserObj(user);
+  //   }
+  // }, [cookies]);
+  // const cookie = new Cookies();
+
+  // const getCookie = (name: string) => {
+  //   return cookie.get(name);
+  // };
+
+  // useEffect(() => {
+  //   const user = getCookie("user"); // 토큰 값이 존재하는 경우에만 api 요청 하겠다.
+
+  //   if (user) {
+  //     fetch("/user/info")
+  //       .then((res) => res.json())
+  //       .then((data) => setUserObj(data));
+  //   }
+  //   console.log(userObj);
+  // }, []);
+
+  // 새로고침 하면 로그인 화면으로 넘어감 이거 어케 고칠려공?
   return (
     <>
       <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
@@ -83,7 +115,7 @@ const App = () => {
           </Helmet>
         </HelmetProvider>
         <GlobalStyle />
-        <Router userObj={userObj} isLoggedIn={Boolean(userObj)} />
+        <Router userObj={userObj} />
       </ThemeProvider>
     </>
   );

@@ -1,9 +1,9 @@
-import { Link, useMatch } from "react-router-dom";
-import { useRecoilState } from "recoil";
+import { useEffect } from "react";
+import { useCookies, Cookies } from "react-cookie";
+import { Link, useMatch, useNavigate } from "react-router-dom";
+import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { isDarkState } from "../atoms";
-import Join from "../pages/Join";
-import Login from "../pages/Login";
+import { isDarkState, isLoggedInState } from "../atoms";
 
 const Container = styled.ul`
   margin: 0 auto;
@@ -17,34 +17,51 @@ const Container = styled.ul`
     width: 100%;
     display: block;
     cursor: pointer;
+    color: inherit;
+    text-decoration: none;
   }
   li > a:hover {
     background-color: ${(props) => props.theme.accentColor};
   }
 `;
 
-const Navigation = () => {
+const Navigation = ({ id, avatarUrl }: any) => {
   const [isDark, setDarkState] = useRecoilState(isDarkState);
-  const matchHome = useMatch("/");
-  const matchJoin = useMatch("/join");
-  const matchLogin = useMatch("/login");
+  const [cookies, setCookie, removeCookie] = useCookies(["user"]);
+
+  const navigate = useNavigate();
+
   const handleClick = () => {
     setDarkState((prev) => !prev);
   };
+
+  const handleLogout = () => {
+    removeCookie("user");
+    localStorage.removeItem("isLoggedIn");
+    navigate("/");
+  };
+  const isLoggedIn = localStorage.getItem("isLoggedIn");
 
   return (
     <Container>
       <li>
         <Link to="/">Home</Link>
       </li>
+      {!Boolean(isLoggedIn) && (
+        <>
+          <li>
+            <Link to="/join">Join</Link>
+          </li>
+          <li>
+            <Link to="/login">Login</Link>
+          </li>
+        </>
+      )}
       <li>
-        <Link to="/join">Join</Link>
+        <Link to="/profile">Profile</Link>
       </li>
-      <li>
-        <Link to="/login">Login</Link>
-      </li>
-      <li>
-        <Link to="/logout">Log out</Link>
+      <li style={{ cursor: "pointer" }}>
+        <div onClick={handleLogout}>Log out</div>
       </li>
       <li>
         <button onClick={handleClick}>

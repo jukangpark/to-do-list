@@ -1,4 +1,5 @@
 import { useForm } from "react-hook-form";
+import { Link, useNavigate } from "react-router-dom";
 import {
   BtnContainer,
   Form,
@@ -6,6 +7,8 @@ import {
   ErrorMessage,
   Btn,
 } from "../components/FormComponents";
+
+import { Title } from "./Login";
 
 interface IFormData {
   id: string;
@@ -20,6 +23,8 @@ const Join = () => {
     formState: { errors },
     setValue,
   } = useForm<IFormData>();
+
+  const navigate = useNavigate();
 
   const onValid = ({ id, password, password2 }: IFormData) => {
     if (password !== password2) {
@@ -40,12 +45,20 @@ const Join = () => {
         password,
         password2,
       }),
-    });
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        alert(data.message);
+        if (data.result === "ok") {
+          navigate("/");
+        }
+      });
   };
 
   return (
     <div>
       <BtnContainer>
+        <Title>회원 가입</Title>
         <Btn styleName={"kakao"}>카카오 계정으로 회원 가입</Btn>
         <Btn styleName={"github"}>깃헙 계정으로 회원 가입</Btn>
       </BtnContainer>
@@ -83,6 +96,9 @@ const Join = () => {
         <ErrorMessage>{errors.password2?.message}</ErrorMessage>
 
         <Btn styleName={"join"}>{`회원가입`}</Btn>
+        <span>
+          이미 계정이 있으신가요? <Link to="/login">로그인</Link>
+        </span>
       </Form>
     </div>
   );

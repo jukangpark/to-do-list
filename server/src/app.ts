@@ -1,6 +1,7 @@
 const isHeroku = process.env.NODE_ENV === "production";
 import dotenv from "dotenv";
 import path from "path";
+import cookieParser from "cookie-parser";
 
 (() => {
   if (isHeroku) return; // 해로쿠 환경에서는 이 즉시 실행함수가 실행되지 않도록 막는다.
@@ -24,6 +25,7 @@ const logger = morgan("dev");
 app.use(logger);
 app.use(express.static("build"));
 app.use(express.json()); // body-parser 는 내장되어 있기 때문에, json 파싱하기 위해 설정 추가.
+app.use(cookieParser()); // cookie-parser
 
 app.get("/", function (req, res) {
   res.sendFile(__dirname + "/build/index.html");
