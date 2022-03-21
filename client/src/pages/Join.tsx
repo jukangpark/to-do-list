@@ -30,7 +30,7 @@ const Join = () => {
     setValue("password", "");
     setValue("password2", "");
 
-    fetch("/api/user/join", {
+    fetch("/user/join", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
