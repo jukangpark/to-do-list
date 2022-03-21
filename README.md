@@ -82,6 +82,6 @@ $ npm run dev
 
 ## Demo 👇
 
-<img src="https://user-images.githubusercontent.com/75718898/159263221-355f1371-e5c9-4051-8e18-702acb66188a.png" alt="login">
+<img width="300px" src="https://user-images.githubusercontent.com/75718898/159263221-355f1371-e5c9-4051-8e18-702acb66188a.png" alt="login">
 
 > 로그인하기 전 홈 화면
