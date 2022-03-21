@@ -57,7 +57,17 @@ a {
   text-decoration: none;
   color: inherit;
 }
+button {
+  border-radius: 0;
+  border: none;
+  background-color: transparent;
+  padding: 0;
+  cursor: pointer;
+  color: ${(props) => props.theme.textColor};
+  
+  
 
+}
 `;
 
 const App = () => {

@@ -24,7 +24,7 @@ const Wrapper = styled.div`
   min-height: 300px;
   display: flex;
   flex-direction: column;
-  background-color: whitesmoke;
+  background-color: ${(props) => props.theme.boardColor};
 `;
 
 interface IAreaProps {
@@ -33,12 +33,7 @@ interface IAreaProps {
 }
 
 const Area = styled.div<IAreaProps>`
-  background-color: ${(props) =>
-    props.isDraggingOver
-      ? "black"
-      : props.isDraggingFromThis
-      ? "#666666"
-      : "whitesmoke"};
+  background-color: ${(props) => props.theme.boardColor};
   transition-duration: 400ms;
   min-height: 300px;
 `;
@@ -46,6 +41,13 @@ const Area = styled.div<IAreaProps>`
 interface IForm {
   toDo: string;
 }
+
+const Input = styled.input`
+  width: 80%;
+  margin: 0 auto;
+  height: 20px;
+  display: block;
+`;
 
 const Board = ({ toDos, boardId }: IBoardProps) => {
   const setToDos = useSetRecoilState(toDoState);
@@ -70,13 +72,11 @@ const Board = ({ toDos, boardId }: IBoardProps) => {
     <Wrapper>
       <Title>{boardId}</Title>
       <form onSubmit={handleSubmit(onValid)}>
-        <label htmlFor={boardId}>{boardId}</label>
-        <input
+        <Input
           {...register("toDo", { required: true })}
           type="text"
           placeholder={boardId}
         />
-        <button>submit</button>
       </form>
       <Droppable droppableId={boardId}>
         {(magic, snapshot) => (

@@ -5,14 +5,18 @@ import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { toDoState } from "../atoms";
 import Board from "../components/Board";
+import { Form, Input } from "../components/FormComponents";
 
 const Wrapper = styled.div`
   display: flex;
   width: 100vw;
-  margin: 0 auto;
+  margin: 100px auto;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+`;
+
+const CreateBoard = styled.div`
+  margin-top: 100px;
 `;
 
 const Boards = styled.div`
@@ -83,18 +87,18 @@ const Home = () => {
   return (
     <div>
       <DragDropContext onDragEnd={onDragEnd}>
-        <div>
-          <form onSubmit={handleSubmit(onValid)}>
-            <input
+        <CreateBoard>
+          <Form onSubmit={handleSubmit(onValid)}>
+            <Input
               {...register("createBoard", {
                 required: "board 이름을 작성해주세요",
               })}
               placeholder="create board"
             />
-            <button>Create</button>
+
             <span>{errors?.createBoard?.message}</span>
-          </form>
-        </div>
+          </Form>
+        </CreateBoard>
         <Wrapper>
           <Boards>
             {Object.keys(toDos).map((boardId) => (
