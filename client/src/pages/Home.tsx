@@ -75,30 +75,30 @@ const Home = () => {
     //destination 이 없을 수도 있기 때문에 => 이유: 유저가 같은 자리에 둘 수도 있으니까.
   };
 
-  const myVars = {
-    start: { opacity: 0 },
-    end: {
-      opacity: 1,
-    },
-  };
+  // const myVars = {
+  //   start: { opacity: 0 },
+  //   end: {
+  //     opacity: 1,
+  //   },
+  // };
 
-  const boxVariants = {
-    start: {
-      opacity: 0,
-      scale: 0.5,
-    },
-    end: {
-      scale: 1,
-      opacity: 1,
-      transition: {
-        type: "spring",
-        duration: 0.3,
-        bounce: 0.5,
-        staggerChildren: 0.3,
-      },
-    },
-  };
-  const Boards = styled(motion.div)`
+  // const boxVariants = {
+  //   start: {
+  //     opacity: 0,
+  //     scale: 0.5,
+  //   },
+  //   end: {
+  //     scale: 1,
+  //     opacity: 1,
+  //     transition: {
+  //       type: "spring",
+  //       duration: 0.3,
+  //       bounce: 0.5,
+  //       staggerChildren: 0.3,
+  //     },
+  //   },
+  // };
+  const Boards = styled.div`
     display: flex;
     justify-content: center;
     align-items: flex-start;
@@ -106,7 +106,7 @@ const Home = () => {
     gap: 10px;
   `;
 
-  const Box = styled(motion.div)``;
+  // const Box = styled(motion.div)``;
 
   return (
     <div>
@@ -124,11 +124,9 @@ const Home = () => {
           </Form>
         </CreateBoard>
         <Wrapper>
-          <Boards variants={boxVariants} initial="start" animate="end">
+          <Boards>
             {Object.keys(toDos).map((boardId, index) => (
-              <Box key={index} variants={myVars}>
-                <Board boardId={boardId} key={boardId} toDos={toDos[boardId]} />
-              </Box>
+              <Board boardId={boardId} key={boardId} toDos={toDos[boardId]} />
             ))}
           </Boards>
         </Wrapper>

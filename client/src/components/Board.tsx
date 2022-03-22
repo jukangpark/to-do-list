@@ -4,7 +4,6 @@ import DraggableCard from "./DraggableCard";
 import { IToDo, toDoState } from "../atoms";
 import { useForm } from "react-hook-form";
 import { useSetRecoilState } from "recoil";
-import { motion } from "framer-motion";
 
 interface IBoardProps {
   toDos: IToDo[];
@@ -48,12 +47,6 @@ const Input = styled.input`
   margin: 0 auto;
   height: 20px;
   display: block;
-`;
-
-const Box = styled(motion.div)`
-  width: 50px;
-  height: 50px;
-  background-color: black;
 `;
 
 const Board = ({ toDos, boardId }: IBoardProps) => {
