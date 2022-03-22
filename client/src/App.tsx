@@ -75,6 +75,15 @@ const App = () => {
   const isDark = useRecoilValue(isDarkState);
   const [userObj, setUserObj] = useState<IUserObj | null>(null);
   const [cookies, setCookie, removeCookie] = useCookies(["user"]);
+  const [isLoggedIn, setIsLoggedIn] = useRecoilState<boolean>(isLoggedInState);
+
+  useEffect(() => {
+    const user = cookies.user;
+
+    if (Boolean(user)) {
+      setIsLoggedIn(true);
+    } // cookies 에 user 토큰이 존재하지 않는다면 기본값은 false 이다.
+  }, [isLoggedIn]);
 
   // const cookie = new Cookies();
 

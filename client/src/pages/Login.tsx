@@ -1,6 +1,8 @@
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
+import { isLoggedInState } from "../atoms";
 
 import {
   Btn,
@@ -30,6 +32,8 @@ const Login = () => {
     setValue,
   } = useForm<IFormData>();
 
+  const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoggedInState);
+
   const navigate = useNavigate();
 
   const onValid = ({ id, password }: IFormData) => {
@@ -50,7 +54,7 @@ const Login = () => {
       .then((data) => {
         alert(data.message);
         if (data.result === "ok") {
-          localStorage.setItem("isLoggedIn", "true");
+          setIsLoggedIn(true);
           navigate("/");
         } else {
           throw new Error(data.error);

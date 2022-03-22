@@ -1,4 +1,6 @@
 import { Routes, Route, Link, Navigate, useNavigate } from "react-router-dom";
+import { useRecoilState } from "recoil";
+import { isLoggedInState } from "./atoms";
 import Navigation from "./components/Navigation";
 import Home from "./pages/Home";
 import Join from "./pages/Join";
@@ -10,19 +12,22 @@ interface IProps {
 }
 
 const Router = ({ userObj }: IProps) => {
-  const isLoggedIn = localStorage.getItem("isLoggedIn");
-  const navigate = useNavigate();
+  const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoggedInState);
+
+  // const isLoggedIn = localStorage.getItem("isLoggedIn");
+  // const navigate = useNavigate();
+
   return (
     <>
-      {Boolean(isLoggedIn) && <Navigation userObj={userObj} />}
+      {isLoggedIn && <Navigation userObj={userObj} />}
       <Routes>
-        {Boolean(isLoggedIn) ? (
+        {isLoggedIn ? (
           <Route path="/" element={<Home />} />
         ) : (
           <Route path="/" element={<Login />} />
         )}
 
-        {Boolean(isLoggedIn) ? (
+        {isLoggedIn ? (
           <Route path="/profile" element={<Profile />} />
         ) : (
           <>

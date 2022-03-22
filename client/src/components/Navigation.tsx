@@ -28,6 +28,7 @@ const Container = styled.ul`
 const Navigation = ({ id, avatarUrl }: any) => {
   const [isDark, setDarkState] = useRecoilState(isDarkState);
   const [cookies, setCookie, removeCookie] = useCookies(["user"]);
+  const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoggedInState);
 
   const navigate = useNavigate();
 
@@ -37,17 +38,17 @@ const Navigation = ({ id, avatarUrl }: any) => {
 
   const handleLogout = () => {
     removeCookie("user");
-    localStorage.removeItem("isLoggedIn");
+    setIsLoggedIn(false);
     navigate("/");
   };
-  const isLoggedIn = localStorage.getItem("isLoggedIn");
+  // const isLoggedIn = localStorage.getItem("isLoggedIn");
 
   return (
     <Container>
       <li>
         <Link to="/">Home</Link>
       </li>
-      {!Boolean(isLoggedIn) && (
+      {!isLoggedIn && (
         <>
           <li>
             <Link to="/join">Join</Link>
