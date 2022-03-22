@@ -41,7 +41,6 @@ const Navigation = ({ id, avatarUrl }: any) => {
     setIsLoggedIn(false);
     navigate("/");
   };
-  // const isLoggedIn = localStorage.getItem("isLoggedIn");
 
   return (
     <Container>

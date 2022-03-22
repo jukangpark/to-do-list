@@ -85,36 +85,6 @@ const App = () => {
     } // cookies 에 user 토큰이 존재하지 않는다면 기본값은 false 이다.
   }, [isLoggedIn]);
 
-  // const cookie = new Cookies();
-
-  // const getCookie = (name: string) => {
-  //   return cookie.get(name);
-  // };
-  // useEffect(() => {
-  //   const user = getCookie("user"); //user cookie 가져오기
-  //   if (user) {
-  //     // cookie 가 있다면
-  //     setUserObj(user);
-  //   }
-  // }, [cookies]);
-  // const cookie = new Cookies();
-
-  // const getCookie = (name: string) => {
-  //   return cookie.get(name);
-  // };
-
-  // useEffect(() => {
-  //   const user = getCookie("user"); // 토큰 값이 존재하는 경우에만 api 요청 하겠다.
-
-  //   if (user) {
-  //     fetch("/user/info")
-  //       .then((res) => res.json())
-  //       .then((data) => setUserObj(data));
-  //   }
-  //   console.log(userObj);
-  // }, []);
-
-  // 새로고침 하면 로그인 화면으로 넘어감 이거 어케 고칠려공?
   return (
     <>
       <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
