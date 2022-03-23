@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
 
 const todosSchema = new mongoose.Schema({
-  ["To Do"]: { type: Array },
-  Doing: { type: Array },
-  Done: { type: Array },
+  ["To Do"]: [],
+  Doing: [],
+  Done: [],
   id: { type: Number, default: Date.now },
   owner: { type: mongoose.Schema.Types.ObjectId, required: true, ref: "User" },
 });
