@@ -3,7 +3,8 @@ import styled from "styled-components";
 import DraggableCard from "./DraggableCard";
 import { IToDo, toDoState } from "../atoms";
 import { useForm } from "react-hook-form";
-import { useSetRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import { useEffect } from "react";
 
 interface IBoardProps {
   toDos: IToDo[];
@@ -50,22 +51,40 @@ const Input = styled.input`
 `;
 
 const Board = ({ toDos, boardId }: IBoardProps) => {
-  const setToDos = useSetRecoilState(toDoState);
+  const [ToDos, setToDos] = useRecoilState(toDoState);
   const { register, setValue, handleSubmit } = useForm<IForm>();
 
-  const onValid = ({ toDo }: IForm) => {
+  const onValid = async ({ toDo }: IForm) => {
     const newToDo = {
       id: Date.now(),
       text: toDo,
     };
 
-    setToDos((allBoards) => {
+    await setToDos((allBoards) => {
       return {
         ...allBoards,
         [boardId]: [newToDo, ...allBoards[boardId]],
       };
     });
+
+    // onValid 밖에서 해야할 수도있을듯?
+    // console.log(ToDos);
+
     setValue("toDo", "");
+  };
+
+  const fetchFunc = () => {
+    fetch("/api/todos", {
+      method: "POST",
+      headers: {
+        "Content-Type": "Application/json",
+      },
+      body: JSON.stringify({
+        ["To Do"]: ToDos["To Do"],
+        Doing: ToDos.Doing,
+        Done: ToDos.Done,
+      }),
+    });
   };
 
   return (
@@ -77,6 +96,9 @@ const Board = ({ toDos, boardId }: IBoardProps) => {
           type="text"
           placeholder={boardId}
         />
+        <button style={{ backgroundColor: "red" }} onClick={() => fetchFunc()}>
+          할일 저장
+        </button>
       </form>
 
       <Droppable droppableId={boardId}>

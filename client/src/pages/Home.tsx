@@ -1,8 +1,7 @@
-import { motion } from "framer-motion";
 import { useEffect } from "react";
 import { DragDropContext, Droppable, DropResult } from "react-beautiful-dnd";
 import { useForm } from "react-hook-form";
-import { useRecoilState } from "recoil";
+import { atomFamily, useRecoilState } from "recoil";
 import styled from "styled-components";
 import { toDoState } from "../atoms";
 import Board from "../components/Board";
@@ -26,13 +25,13 @@ interface IForm {
 
 const Home = () => {
   const [toDos, setToDos] = useRecoilState(toDoState);
+
   const {
     register,
     handleSubmit,
     setValue,
     formState: { errors },
   } = useForm<IForm>();
-  console.log(errors);
 
   const onValid = ({ createBoard }: IForm) => {
     setToDos((allBoards) => {
@@ -41,6 +40,25 @@ const Home = () => {
     });
     setValue("createBoard", "");
   };
+
+  useEffect(() => {
+    fetch("/api/todos")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.message === "DB 에 해당 유저의 todos가 없습니다") {
+          return;
+        }
+        const downloadedtoDos = {
+          "To Do": data["To Do"],
+          Doing: data.Doing,
+          Done: data.Done,
+        };
+        setToDos(downloadedtoDos);
+      });
+  }, []);
+
+  // Board 라는 함수형 컴포넌트가 애초에 3번씩 호출되고 있었음.
+  // 따라서 Board 컴포넌트안에서 api 호출하게 되면 안됨
 
   const onDragEnd = (info: DropResult) => {
     const { destination, source } = info;
@@ -58,6 +76,7 @@ const Home = () => {
       });
     }
     if (destination.droppableId !== source.droppableId) {
+      // cross board movement
       setToDos((allBoards) => {
         const sourceBoard = [...allBoards[source.droppableId]];
         const taskObj = sourceBoard[source.index];
@@ -70,34 +89,26 @@ const Home = () => {
           [destination.droppableId]: destinationBoard,
         };
       });
-      // cross board movement
     }
+
+    fetch("/api/todos", {
+      method: "POST",
+      headers: {
+        "Content-Type": "Application/json",
+      },
+      body: JSON.stringify({
+        "To Do": toDos["To Do"],
+        Doing: toDos.Doing,
+        Done: toDos.Done,
+      }),
+      // 왜 도대체 전역 State 는 여기서 적용 바로 되지 않는거임????
+      // 드래그를 두번 해야 그전의 State 만 DB에 저장되네..
+      // 이유가 뭔가요.. 제발..
+    });
+
     //destination 이 없을 수도 있기 때문에 => 이유: 유저가 같은 자리에 둘 수도 있으니까.
   };
 
-  // const myVars = {
-  //   start: { opacity: 0 },
-  //   end: {
-  //     opacity: 1,
-  //   },
-  // };
-
-  // const boxVariants = {
-  //   start: {
-  //     opacity: 0,
-  //     scale: 0.5,
-  //   },
-  //   end: {
-  //     scale: 1,
-  //     opacity: 1,
-  //     transition: {
-  //       type: "spring",
-  //       duration: 0.3,
-  //       bounce: 0.5,
-  //       staggerChildren: 0.3,
-  //     },
-  //   },
-  // };
   const Boards = styled.div`
     display: flex;
     justify-content: center;
@@ -105,8 +116,6 @@ const Home = () => {
     width: 100%;
     gap: 10px;
   `;
-
-  // const Box = styled(motion.div)``;
 
   return (
     <div>

@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { darkTheme, lightTheme } from "./theme";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { isDarkState, isLoggedInState } from "./atoms";
-import { Cookies, useCookies } from "react-cookie";
+import { useCookies } from "react-cookie";
 
 const GlobalStyle = createGlobalStyle`
 

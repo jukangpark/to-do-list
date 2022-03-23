@@ -14,9 +14,9 @@ import cookieParser from "cookie-parser";
 
 import "./db";
 import express, { Application } from "express";
-import apiRouter from "./routers/apiRouter";
 import morgan from "morgan";
 import userRouter from "./routers/userRouter";
+import apiRouter from "./routers/apiRouter";
 
 const app: Application = express();
 const PORT = process.env.PORT || 9000;
@@ -26,13 +26,14 @@ app.use(logger);
 app.use(express.static("build"));
 app.use(express.json()); // body-parser 는 내장되어 있기 때문에, json 파싱하기 위해 설정 추가.
 app.use(cookieParser()); // cookie-parser
+app.use(express.urlencoded({ extended: true }));
 
 app.get("/", function (req, res) {
   res.sendFile(__dirname + "/build/index.html");
 });
 
-app.use("/api", apiRouter);
 app.use("/user", userRouter);
+app.use("/api", apiRouter);
 
 app.get("*", (req, res) => {
   if (isHeroku) {
