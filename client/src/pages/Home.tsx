@@ -1,7 +1,7 @@
 import { useEffect } from "react";
-import { DragDropContext, Droppable, DropResult } from "react-beautiful-dnd";
+import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { useForm } from "react-hook-form";
-import { atomFamily, useRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { toDoState } from "../atoms";
 import Board from "../components/Board";

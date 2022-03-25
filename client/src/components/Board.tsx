@@ -1,10 +1,12 @@
 import { Droppable } from "react-beautiful-dnd";
 import styled from "styled-components";
 import DraggableCard from "./DraggableCard";
-import { IToDo, toDoState } from "../atoms";
-import { useForm } from "react-hook-form";
+import { toDoState } from "../atoms";
+import { IToDo } from "../atoms";
+
 import { useRecoilState, useSetRecoilState } from "recoil";
-import { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 
 interface IBoardProps {
   toDos: IToDo[];
@@ -54,51 +56,92 @@ const Board = ({ toDos, boardId }: IBoardProps) => {
   const [ToDos, setToDos] = useRecoilState(toDoState);
   const { register, setValue, handleSubmit } = useForm<IForm>();
 
-  const onValid = async ({ toDo }: IForm) => {
+  // const onValid = ({ toDo }: IForm) => {
+  //   const newToDo = {
+  //     id: Date.now(),
+  //     text: toDo,
+  //   };
+
+  //   setToDos((allBoards) => {
+  //     return {
+  //       ...allBoards,
+  //       [boardId]: [newToDo, ...allBoards[boardId]],
+  //     };
+  //   });
+
+  //   console.log(ToDos);
+
+  //   // onValid 밖에서 해야할 수도있을듯?
+  //   fetch("/api/todos", {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "Application/json",
+  //     },
+  //     body: JSON.stringify({
+  //       ["To Do"]: ToDos["To Do"],
+  //       Doing: ToDos.Doing,
+  //       Done: ToDos.Done,
+  //     }),
+  //   });
+
+  //   setValue("toDo", "");
+  // };
+
+  const onValid = ({ toDo }: IForm) => {
     const newToDo = {
       id: Date.now(),
       text: toDo,
     };
+    console.log(toDo);
 
-    await setToDos((allBoards) => {
+    setToDos((allBoards) => {
       return {
         ...allBoards,
         [boardId]: [newToDo, ...allBoards[boardId]],
       };
     });
 
+    console.log(ToDos);
+
     // onValid 밖에서 해야할 수도있을듯?
-    // console.log(ToDos);
-
-    setValue("toDo", "");
-  };
-
-  const fetchFunc = () => {
     fetch("/api/todos", {
       method: "POST",
       headers: {
         "Content-Type": "Application/json",
       },
       body: JSON.stringify({
-        ["To Do"]: ToDos["To Do"],
-        Doing: ToDos.Doing,
-        Done: ToDos.Done,
+        ...ToDos,
+        [boardId]: [newToDo, ...ToDos[boardId]],
+        // ["To Do"]: ToDos["To Do"],
+        // Doing: ToDos.Doing,
+        // Done: ToDos.Done,
       }),
     });
+
+    setValue("toDo", "");
   };
+
+  // const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  //   event.preventDefault();
+  //   console.log(ToDos);
+  //   console.log("hello");
+  // };
+
+  // const onChange = (event: React.FormEvent<HTMLInputElement>) => {
+  //   console.log(event.currentTarget.value);
+  //   console.log(ToDos);
+  // };
 
   return (
     <Wrapper>
       <Title>{boardId}</Title>
+
       <form onSubmit={handleSubmit(onValid)}>
         <Input
-          {...register("toDo", { required: true })}
           type="text"
           placeholder={boardId}
+          {...register("toDo", { required: true })}
         />
-        <button style={{ backgroundColor: "red" }} onClick={() => fetchFunc()}>
-          할일 저장
-        </button>
       </form>
 
       <Droppable droppableId={boardId}>
