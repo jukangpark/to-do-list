@@ -1,8 +1,9 @@
 import User from "../models/User";
 import bcyrpt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { Request, Response } from "express";
 
-export const join = async (req, res) => {
+export const join = async (req: Request, res: Response) => {
   const { id, password } = req.body;
   const exists = await User.findOne({ id });
   if (exists) {
@@ -26,7 +27,7 @@ export const join = async (req, res) => {
     .end();
 };
 
-export const login = async (req, res) => {
+export const login = async (req: Request, res: Response) => {
   const { id, password } = req.body;
 
   const user = await User.findOne({ id });
@@ -67,7 +68,7 @@ export const login = async (req, res) => {
   });
 };
 
-export const getUserInfo = async (req, res) => {
+export const getUserInfo = async (req: Request, res: Response) => {
   const user = res.locals.user;
 
   const findUser = await User.findById(user.user_id);

@@ -1,6 +1,11 @@
 import jwt from "jsonwebtoken";
+import { Request, Response, NextFunction } from "express";
 
-export const verifyToken = (req, res, next) => {
+export const verifyToken = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const clientToken = req.cookies.user;
     const decoded = jwt.verify(

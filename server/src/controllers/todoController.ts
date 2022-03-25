@@ -1,6 +1,7 @@
 import Todos from "../models/Todos";
+import { Request, Response } from "express";
 
-export const getTodos = async (req, res) => {
+export const getTodos = async (req: Request, res: Response) => {
   const { user } = res.locals;
   const { user_id: _id } = user;
   const todos = await Todos.findOne({ owner: _id });
@@ -10,7 +11,7 @@ export const getTodos = async (req, res) => {
   return res.send({ message: "DB 에 해당 유저의 todos가 없습니다" });
 };
 
-export const postTodos = async (req, res) => {
+export const postTodos = async (req: Request, res: Response) => {
   const { Doing, Done } = req.body;
   const ToDo = req.body["To Do"];
   const _id = res.locals.user.user_id;
