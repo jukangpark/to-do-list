@@ -31,6 +31,6 @@ export const postTodos = async (req: Request, res: Response) => {
     Done,
     owner: _id,
   });
-  // 요청이 여러번 되어지고 삭제가 되버림 이거 왜이런거임?
+
   return res.status(200).send({ hello: "postTodos" }).end();
 };

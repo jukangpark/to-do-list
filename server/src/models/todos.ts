@@ -1,9 +1,11 @@
 import mongoose from "mongoose";
 
+const Empty = new mongoose.Schema({ any: [] });
+
 const todosSchema = new mongoose.Schema({
-  ["To Do"]: [],
-  Doing: [],
-  Done: [],
+  ["To Do"]: [Empty],
+  Doing: [Empty],
+  Done: [Empty],
   id: { type: Number, default: Date.now },
   owner: { type: mongoose.Schema.Types.ObjectId, required: true, ref: "User" },
 });
